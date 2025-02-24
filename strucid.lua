@@ -434,6 +434,8 @@ miscTab:Button("Choose Key to Minimize", function()
             if input.UserInputType == Enum.UserInputType.Keyboard then
                 minimizeKey = input.KeyCode
                 prompt:Destroy()
+
+                -- Disconnect any previous connections
                 uis.InputBegan:Connect(function(input, gameProcessed)
                     if not gameProcessed and input.KeyCode == minimizeKey then
                         toggleMenuVisibility()
