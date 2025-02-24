@@ -49,7 +49,7 @@ game:GetService("RunService").Heartbeat:connect(function(step)if flying and c an
   local Workspace=game:GetService("Workspace");
   local CurrentCam=Workspace.CurrentCamera;
   local require=require;
-  local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Taffywaffylolz/StrucidV1/main/strucid.lua"))()
+  local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/UI-Libs/main/Vape.txt"))()
   local win = lib:Window("Alina | Strucid | V1 | Alina", Color3.fromRGB(44, 120, 224), Enum.KeyCode.P)
   
   -- Hitbox settings
