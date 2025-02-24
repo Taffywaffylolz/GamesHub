@@ -1,10 +1,12 @@
 --[[
 
-       Alina                                                                                                                                                 
-]] --  
--- Alina
+Alina Strucid
 
--- Fly script
+OPEN SOURCE VERSION: I wont be maintaining the old version of the code so its open source now.
+
+]]--
+
+-- fly script
 local flySettings={fly=false,flyspeed=50}
 local c local h local bv local bav local cam local flying local p=game.Players.LocalPlayer
 local buttons={W=false,S=false,A=false,D=false,Moving=false}
@@ -17,6 +19,7 @@ game:GetService("RunService").Heartbeat:connect(function(step)if flying and c an
 
 local Players=game:GetService("Players");
 local Player=Players.LocalPlayer;
+--local Mouse=Player:GetMouse();
 local Workspace=game:GetService("Workspace");
 local CurrentCam=Workspace.CurrentCamera;
 local require=require;
@@ -32,7 +35,8 @@ local hitboxSize = 20
 local tab = win:Tab("Main")
 tab:Label("> Silent Aim")
 
--- Silent Aim feature (closest enemy)
+-- not really a silent aim just shoots the closest enemy player lol
+-- also could be patched since i havent updated it for awhile
 local silentAimEnabled = false
 tab:Toggle("Silent Aim", false, function(state)
     silentAimEnabled = state
@@ -46,7 +50,7 @@ tab:Toggle("Silent Aim", false, function(state)
         for _, player in pairs(game.Players:GetPlayers()) do
             if player ~= Player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
                 if myTeam then
-                    local enemyTeam = myTeam.Name == "Blue" and "Red" or "Blue" 
+                    local enemyTeam = myTeam.Name == "Blue" and "Red" or "Blue"
 
                     if player.Team.Name == enemyTeam then
                         local character = player.Character
@@ -82,7 +86,7 @@ tab:Toggle("Silent Aim", false, function(state)
     local function run()
         task.wait()
         local gunModule = require(Players.PlayerGui:WaitForChild("MainGui").NewLocal.Tools.Tool.Gun)
-        local oldFunc = gunModule.ConeOfFire
+        local oldFunc   = gunModule.ConeOfFire
 
         gunModule.ConeOfFire = function(...)
             if silentAimEnabled then
@@ -102,6 +106,7 @@ end)
 
 -- Hitbox Collide
 tab:Label("> Hitbox Collide")
+
 local function hitboxes()
     for _, player in pairs(game:GetService("Players"):GetPlayers()) do
         if player ~= game:GetService("Players").LocalPlayer then
@@ -140,7 +145,87 @@ tab:Slider("Hitbox Transparency", 0, 1, hitboxTransparency, function(value)
     hitboxes()
 end)
 
--- Player Tab
+-- Hitbox (No Collision)
+tab:Label("> Hitbox (No Collision)")
+local function hitboxesNoCollision()
+    for _, player in pairs(game:GetService("Players"):GetPlayers()) do
+        if player ~= game:GetService("Players").LocalPlayer then
+            local character = player.Character
+            local rootPart = character and character:FindFirstChild("HumanoidRootPart")
+            if rootPart then
+                local success, err = pcall(function()
+                    rootPart.CanCollide = not hitboxEnabled
+                    rootPart.Transparency = hitboxEnabled and hitboxTransparency or 0
+                    rootPart.Size = hitboxEnabled and Vector3.new(hitboxSize, hitboxSize, hitboxSize) or originalHitboxSize
+                    rootPart.CollisionGroup = hitboxEnabled and "PlayerHitbox" or "Default"
+                end)
+                if not success then
+                    warn("Error modifying the hitbox:", err)
+                end
+            end
+        end
+    end
+end
+
+tab:Toggle("Hitbox", false, function(state)
+    hitboxEnabled = state
+
+    if state then
+        connection = game:GetService("RunService").Stepped:Connect(hitboxesNoCollision)
+    else
+        if connection then
+            connection:Disconnect()
+        end
+        hitboxesNoCollision()
+    end
+end)
+
+tab:Slider("Hitbox Size", 1, 50, hitboxSize, function(value)
+    hitboxSize = value
+    hitboxesNoCollision()
+end)
+
+tab:Slider("Hitbox Transparency", 0, 1, hitboxTransparency, function(value)
+    hitboxTransparency = value
+    hitboxesNoCollision()
+end)
+
+-- Visuals tab
+local Visual = win:Tab("Visuals")
+Visual:Label("> ESP")
+-- kiriot22s esp
+local aj = loadstring(game:HttpGet("https://raw.githubusercontent.com/StevenK-293/Loadstrings/main/esp.lua"))()
+
+Visual:Toggle("Enable Esp (Won't Work For FFA)", false, function(K)
+    aj:Toggle(K)
+    aj.Players = K
+end)
+
+Visual:Toggle("Tracers Esp", false, function(K)
+    aj.Tracers = K
+end)
+
+Visual:Toggle("Name Esp", false, function(K)
+    aj.Names = K
+end)
+
+Visual:Toggle("Boxes Esp", false, function(K)
+    aj.Boxes = K
+end)
+
+Visual:Toggle("TeamColor", false, function(L)
+    aj.TeamColor = L
+end)
+
+Visual:Toggle("TeamMates", false, function(L)
+    aj.TeamMates = L
+end)
+
+Visual:Colorpicker("ESP Color", Color3.fromRGB(0, 0, 255), function(P)
+    aj.Color = P
+end)
+
+-- Player tab
 local tab3 = win:Tab("Player")
 tab3:Label("> Fly")
 tab3:Toggle("Fly", false, function(state)
@@ -153,6 +238,40 @@ end)
 
 tab3:Slider("Fly Speed", 1, 500, 1, function(s)
     flySettings.flyspeed = s
+end)
+
+-- God Mode
+local godModeEnabled = false
+tab3:Toggle("God Mode", false, function(state)
+    godModeEnabled = state
+    if state then
+        local character = Player.Character
+        if character then
+            for _, part in pairs(character:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.CanCollide = false
+                end
+            end
+        end
+        Player.CharacterAdded:Connect(function(char)
+            if godModeEnabled then
+                for _, part in pairs(char:GetDescendants()) do
+                    if part:IsA("BasePart") then
+                        part.CanCollide = false
+                    end
+                end
+            end
+        end)
+    else
+        local character = Player.Character
+        if character then
+            for _, part in pairs(character:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.CanCollide = true
+                end
+            end
+        end
+    end
 end)
 
 tab3:Label("> WalkSpeed")
@@ -210,23 +329,29 @@ tab3:Toggle("Inf Jump", false, function(state)
     end)
 end)
 
--- Misc Tab with Key to Close Menu
-local miscTab = win:Tab("Misc")
-miscTab:Label("> Key to Close Menu")
+-- Settings
+local changeclr = win:Tab("Settings")
+local toggle = false
 
-local closeKey = Enum.KeyCode.P  -- Default key to close the menu
+local function runToggleableScript()
+    if toggle then
+        local voteKick = game:GetService("Players").LocalPlayer.PlayerGui.MenuUI.VoteKick
+        if voteKick and voteKick.Title.Text == "Vote Kick <font color='#FFA500'>".. game.Players.LocalPlayer.Name .. "</font>?" then
+            game:GetService("TeleportService"):Teleport(game.PlaceId)
+        else
+            wait()
+        end
+    end
+end
 
-miscTab:Dropdown("Key to Close Menu", {"P", "Q", "E", "R", "T", "Y", "U", "I", "O", "P", "A", "S", "D", "F", "G", "H", "J", "K", "L", "Z", "X", "C", "V", "B", "N", "M"}, function(value)
-    closeKey = Enum.KeyCode[value]
-end)
-
--- Close the UI when the specified key is pressed
-game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
-    if gameProcessed then return end
-    if input.KeyCode == closeKey then
-        win:Close()
+game:GetService("RunService").Heartbeat:Connect(runToggleableScript)
+changeclr:Toggle("Rejoin when VoteKick", toggle, function(state)
+    toggle = state
+    if not toggle then
+        game:GetService("Players").LocalPlayer.PlayerGui.MenuUI.VoteKick.Title.Text = ""
     end
 end)
 
--- Notify user of successful setup
-miscTab:Label("Press the selected key to close the menu")
+changeclr:Colorpicker("Change UI Color", Color3.fromRGB(44, 120, 224), function(t)
+    lib:ChangePresetColor(Color3.fromRGB(t.R * 255, t.G * 255, t.B * 255))
+end)
