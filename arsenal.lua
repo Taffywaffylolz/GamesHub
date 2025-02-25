@@ -60,10 +60,10 @@ game:GetService("RunService").Heartbeat:connect(function(step)if flying and c an
 
 
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/bitef4/Recode/main/UI/Kavo_1.lua"))()
-local Window = Library.CreateLib("AdvanceTech | Arsenal | v1.7 ", "BlueTheme")
+local Window = Library.CreateLib("AlinaWare | Arsenal | v1.0 ", "BlueTheme")
 
 local Welcome = Window:NewTab("Main")
-local MainSection = Welcome:NewSection("Welcome To AdvanceTech | " .. game.Players.LocalPlayer.Name)
+local MainSection = Welcome:NewSection("Welcome To AlinaWare | " .. game.Players.LocalPlayer.Name)
 
 local HitboxSection = Welcome:NewSection("> Hitbox Settings <")
 local triggerbot = Welcome:NewSection("> Triggerbot <")
