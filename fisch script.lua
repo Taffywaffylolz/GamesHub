@@ -48,8 +48,8 @@ local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/d
 local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
 
 local Window = Fluent:CreateWindow({
-    Title = "Fisch | Space Hub",
-    SubTitle = "v1.6",
+    Title = "ALinaWare Fisch",
+    SubTitle = "v1.0",
     TabWidth = 150,
     Size = UDim2.fromOffset(600, 400),
     Acrylic = false,
@@ -614,9 +614,9 @@ end
 do
     local _25ms=Tabs.Home:AddButton({
         Title = "Copy Discord Invite",
-        Description = "discord.gg/bKfnyAXrHT, join for more leaks",
+        Description = "https://discord.gg/zeHgkxzrAR, join for Scripts",
         Callback = function()
-            setclipboard("https://discord.gg/bKfnyAXrHT")
+            setclipboard("https://discord.gg/zeHgkxzrAR")
         end
     })
     local section = Tabs.Home:AddSection("Change Log:")
