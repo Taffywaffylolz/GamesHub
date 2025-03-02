@@ -4384,7 +4384,7 @@ CMDs[#CMDs + 1] = {NAME = 'vehicleflyspeed  / vflyspeed [num]', DESC = 'Set vehi
 CMDs[#CMDs + 1] = {NAME = 'cframefly / cfly [speed]', DESC = 'Makes you fly, bypassing some anti cheats (works on mobile)'}
 CMDs[#CMDs + 1] = {NAME = 'uncframefly / uncfly', DESC = 'Disables cfly'}
 CMDs[#CMDs + 1] = {NAME = 'cframeflyspeed  / cflyspeed [num]', DESC = 'Sets cfly speed'}
-CMDs[#CMDs + 1] = {NAME = 'qefly [true / false]', DESC = 'enables or disables the Q and E hotkeys for fly'}
+CMDs[#CMDs + 1] = {NAME = 'GFfly [true / false]', DESC = 'enables or disables the Q and E hotkeys for fly'}
 CMDs[#CMDs + 1] = {NAME = 'vehiclenoclip / vnoclip', DESC = 'Turns off vehicle collision'}
 CMDs[#CMDs + 1] = {NAME = 'vehicleclip / vclip / unvnoclip', DESC = 'Enables vehicle collision'}
 CMDs[#CMDs + 1] = {NAME = 'float /  platform', DESC = 'Spawns a platform beneath you causing you to float'}
@@ -6902,7 +6902,7 @@ addcmd('togglenoclip',{},function(args, speaker)
 end)
 
 FLYING = false
-QEfly = true
+GFfly = false
 iyflyspeed = 1
 vehicleflyspeed = 1
 function sFLY(vfly)
@@ -6965,9 +6965,9 @@ function sFLY(vfly)
 			CONTROL.L = - (vfly and vehicleflyspeed or iyflyspeed)
 		elseif KEY:lower() == 'd' then 
 			CONTROL.R = (vfly and vehicleflyspeed or iyflyspeed)
-		elseif QEfly and KEY:lower() == 'e' then
+		elseif GFfly and KEY:lower() == 'G' then
 			CONTROL.Q = (vfly and vehicleflyspeed or iyflyspeed)*2
-		elseif QEfly and KEY:lower() == 'q' then
+		elseif GFfly and KEY:lower() == 'F' then
 			CONTROL.E = -(vfly and vehicleflyspeed or iyflyspeed)*2
 		end
 		pcall(function() workspace.CurrentCamera.CameraType = Enum.CameraType.Track end)
@@ -7138,11 +7138,11 @@ addcmd('vflyspeed',{'vflysp','vehicleflyspeed','vehicleflysp'},function(args, sp
 	end
 end)
 
-addcmd('qefly',{'flyqe'},function(args, speaker)
+addcmd('GFfly',{'flyqe'},function(args, speaker)
 	if args[1] == 'false' then
-		QEfly = false
+		GFfly = false
 	else
-		QEfly = true
+		GFfly = true
 	end
 end)
 
